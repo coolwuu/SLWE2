@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
+import 'package:http/http.dart' as http;
 
+
+var responseString = "DONE" ;
 void main() {
   runApp(new MaterialApp(
     home: new MyApp(),
@@ -34,6 +39,14 @@ class _MyAppState extends State<MyApp> {
           ]),
     );
   }
+
+  @override
+  void initState() {
+    GetInitData().then((value){
+      responseString = value.toString();
+    });
+    super.initState();
+  }
 }
 
 class AfterSplash extends StatelessWidget {
@@ -53,7 +66,7 @@ class AfterSplash extends StatelessWidget {
       ),
       body: new Center(
         child: new Text(
-          "Done!",
+          responseString,
           style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
         ),
       ),
@@ -165,3 +178,15 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
     );
   }
 }
+
+
+Future<Map<String,dynamic>> GetInitData()async {
+  var response = await http.get(
+      Uri.encodeFull("https://pokeapi.co/api/v2/pokemon/ditto/"),
+      headers: {"Accept": "application/json"});
+
+  print("API CALL");
+  return json.decode(response.body);
+
+}
+
