@@ -20,23 +20,19 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-      body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            new Center(
-              child: new SplashScreen(
-                seconds: 15,
-                navigateAfterSeconds: new AfterSplash(),
-                image: Image(
-                  image: AssetImage('content/image/logo.jpeg'),
-                ),
-                backgroundColor: Colors.white,
-                photoSize: 140.0,
-              ),
-            )
-          ]),
+    return Container(
+      child: new SplashScreen(
+        seconds: 3,
+        navigateAfterSeconds: new AfterSplash(),
+        image: Image(
+          image: AssetImage('content/image/logo.jpeg'),
+          height: 168,
+        ),
+        backgroundColor: Colors.white,
+        photoSize: 140.0,
+      ),
+      height: 338,
+      
     );
   }
 
