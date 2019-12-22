@@ -15,19 +15,24 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return new SplashScreen(
-        seconds: 5,
-        navigateAfterSeconds: new AfterSplash(),
-        title: new Text(
-          'PokeDex',
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),
-        ),
-        image: Image(image: AssetImage('content/image/logo.jpeg')),
-        //new Image.asset('content/image/logo.jpeg'),
-        backgroundColor: Colors.white,
-        styleTextUnderTheLoader: new TextStyle(),
-        photoSize: 100.0,
-        loaderColor: Colors.red);
+    return new Scaffold(
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            new Center(
+              child: new SplashScreen(
+                seconds: 15,
+                navigateAfterSeconds: new AfterSplash(),
+                image: Image(
+                  image: AssetImage('content/image/logo.jpeg'),
+                ),
+                backgroundColor: Colors.white,
+                photoSize: 140.0,
+              ),
+            )
+          ]),
+    );
   }
 }
 
