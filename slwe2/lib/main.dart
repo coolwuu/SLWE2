@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:http/http.dart' as http;
@@ -81,11 +80,12 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
     "皮卡丘4",
   ];
 
-  var suggestList = [
+  var suggestList = pokemonBaseList.map((x)=>x.name).toList().sublist(0,3);
+  /* = [
     "皮卡丘1",
     "皮卡丘2",
   ];
-
+  */
   @override
   String get searchFieldLabel => searchHint;
 
@@ -127,7 +127,8 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
     List<String> result = List();
 
     ///模拟搜索过程
-    for (var str in sourceList) {
+    for (var pokemonBase in pokemonBaseList) {
+      var str = pokemonBase.name ;
       ///query 就是输入框的 TextEditingController
       if (query.isNotEmpty && str.contains(query)) {
         result.add(str);
@@ -147,7 +148,8 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     List<String> suggest = query.isEmpty
         ? suggestList
-        : sourceList.where((input) => input.startsWith(query)).toList();
+        //: sourceList.where((input) => input.startsWith(query)).toList();
+        : pokemonBaseList.where((input)=>input.name.startsWith(query)).map((x)=>x.name).toList();
     return ListView.builder(
       itemCount: suggest.length,
       itemBuilder: (BuildContext context, int index) => InkWell(
@@ -180,7 +182,7 @@ Future<List<pokemonBase>> GetInitData() async {
   print('Api Call');
   var url = "https://pokeapi.co/api/v2/pokemon-species";
   var pokemonList = new List<pokemonBase>();
-  while (url != null) {
+  //while (url != null) {
     print('GG');
     print(url);
     var response = await http
@@ -193,7 +195,7 @@ Future<List<pokemonBase>> GetInitData() async {
       var temp = result[i];
       pokemonList.add(new pokemonBase(temp['name'], temp['url']));
     }
-  }
+  //}
   return pokemonList;
 }
 
