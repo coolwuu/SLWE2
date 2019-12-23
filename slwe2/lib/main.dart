@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:http/http.dart' as http;
 
-
-var responseString = "DONE" ;
+var responseString = "DONE";
+List<pokemonBase> pokemonBaseList;
 void main() {
   runApp(new MaterialApp(
     home: new MyApp(),
@@ -38,8 +38,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    GetInitData().then((value){
-      responseString = value.toString();
+    GetInitData().then((value) {
+      pokemonBaseList = value;
+      //print(pokemonBaseList.length);
     });
     super.initState();
   }
@@ -175,14 +176,29 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   }
 }
 
-
-Future<Map<String,dynamic>> GetInitData()async {
-  var response = await http.get(
-      Uri.encodeFull("https://pokeapi.co/api/v2/pokemon/ditto/"),
-      headers: {"Accept": "application/json"});
-
-  print("API CALL");
-  return json.decode(response.body);
-
+Future<List<pokemonBase>> GetInitData() async {
+  print('Api Call');
+  var url = "https://pokeapi.co/api/v2/pokemon-species";
+  var pokemonList = new List<pokemonBase>();
+  while (url != null) {
+    print('GG');
+    print(url);
+    var response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var data = json.decode(response.body);
+    url = data['next'];
+    var result = data['results'];
+    for (var i = 0; i < result.length; i++)
+    {
+      var temp = result[i];
+      pokemonList.add(new pokemonBase(temp['name'], temp['url']));
+    }
+  }
+  return pokemonList;
 }
 
+class pokemonBase {
+  final String name;
+  final String url;
+  pokemonBase(this.name, this.url);
+}
