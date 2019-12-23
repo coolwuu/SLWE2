@@ -23,8 +23,8 @@ class _MyAppState extends State<MyApp> {
       child: new SplashScreen(
         seconds: 3,
         navigateAfterSeconds: new AfterSplash(),
-        image: Image(
-          image: AssetImage('content/image/logo.jpeg'),
+        image:  Image(
+          image: AssetImage('content/image/question.jpeg'),
           height: 168,
         ),
         backgroundColor: Colors.white,
@@ -61,10 +61,14 @@ class AfterSplash extends StatelessWidget {
         ],
       ),
       body: new Center(
-        child: new Text(
-          responseString,
-          style: new TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
-        ),
+        child: Container(
+          decoration: new BoxDecoration(
+            image : DecorationImage(
+              image : AssetImage('content/image/answer.jpeg'),
+              //fit: BoxFit.fill,
+            )
+          ),
+        )
       ),
     );
   }
@@ -72,13 +76,14 @@ class AfterSplash extends StatelessWidget {
 
 class SearchBarViewDelegate extends SearchDelegate<String> {
   String searchHint = "GOGO Name";
-  var sourceList = [
+  /*var sourceList = [
     "皮卡丘",
     "皮卡丘1",
     "皮卡丘2",
     "皮卡丘3",
     "皮卡丘4",
   ];
+  */
 
   var suggestList = pokemonBaseList.map((x)=>x.name).toList().sublist(0,3);
   /* = [

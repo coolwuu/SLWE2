@@ -47,6 +47,8 @@ flutter:
   uses-material-design: true
   assets:
     - content/image/logo.jpeg
+    - content/image/answer.jpeg
+    - content/image/question.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
