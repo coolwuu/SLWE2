@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:http/http.dart' as http;
+import 'package:sprintf/sprintf.dart';
 
 var responseString = "DONE";
 List<PokemonBase> pokemonBaseList;
@@ -23,7 +24,7 @@ class _MyAppState extends State<MyApp> {
       child: new SplashScreen(
         seconds: 3,
         navigateAfterSeconds: new AfterSplash(),
-        image:  Image(
+        image: Image(
           image: AssetImage('content/image/question.jpeg'),
           height: 168,
         ),
@@ -31,7 +32,6 @@ class _MyAppState extends State<MyApp> {
         photoSize: 140.0,
       ),
       height: 338,
-      
     );
   }
 
@@ -61,15 +61,13 @@ class AfterSplash extends StatelessWidget {
         ],
       ),
       body: new Center(
-        child: Container(
-          decoration: new BoxDecoration(
-            image : DecorationImage(
-              image : AssetImage('content/image/answer.jpeg'),
-              //fit: BoxFit.fill,
-            )
-          ),
-        )
-      ),
+          child: Container(
+        decoration: new BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('content/image/answer.jpeg'),
+          //fit: BoxFit.fill,
+        )),
+      )),
     );
   }
 }
@@ -85,7 +83,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   ];
   */
 
-  var suggestList = pokemonBaseList.map((x)=>x.name).toList().sublist(0,3);
+  var suggestList = pokemonBaseList.sublist(0, 3);
   /* = [
     "皮卡丘1",
     "皮卡丘2",
@@ -129,14 +127,15 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   ///展示搜索结果
   @override
   Widget buildResults(BuildContext context) {
-    List<String> result = List();
+    List<PokemonBase> result = List();
 
     ///模拟搜索过程
     for (var pokemonBase in pokemonBaseList) {
-      var str = pokemonBase.name ;
+      var pokemon = pokemonBase;
+
       ///query 就是输入框的 TextEditingController
-      if (query.isNotEmpty && str.contains(query)) {
-        result.add(str);
+      if (query.isNotEmpty && pokemon.name.contains(query)) {
+        result.add(pokemon);
       }
     }
 
@@ -144,38 +143,43 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
     return ListView.builder(
       itemCount: result.length,
       itemBuilder: (BuildContext context, int index) => ListTile(
-        title: Text(result[index]),
+        title: Text(result[index].name),
+        leading: Image.network("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+ result[index].id.toString() + ".png"),
       ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    List<String> suggest = query.isEmpty
+    List<PokemonBase> suggest = query.isEmpty
         ? suggestList
         //: sourceList.where((input) => input.startsWith(query)).toList();
-        : pokemonBaseList.where((input)=>input.name.startsWith(query)).map((x)=>x.name).toList();
+        : pokemonBaseList
+            .where((input) => input.name.startsWith(query))
+            .map((x) => x.name)
+            .toList();
     return ListView.builder(
       itemCount: suggest.length,
       itemBuilder: (BuildContext context, int index) => InkWell(
         child: ListTile(
           title: RichText(
             text: TextSpan(
-              text: suggest[index].substring(0, query.length),
+              text: suggest[index].name.substring(0, query.length),
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
               children: [
                 TextSpan(
-                  text: suggest[index].substring(query.length),
+                  text: suggest[index].name.substring(query.length),
                   style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
           ),
+          leading: Image.network("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+ suggest[index].id.toString() + ".png"),
         ),
         onTap: () {
           //  query.replaceAll("", suggest[index].toString());
           searchHint = "";
-          query = suggest[index].toString();
+          query = suggest[index].name.toString();
           showResults(context);
         },
       ),
@@ -184,41 +188,45 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
 }
 
 Future<List<PokemonBase>> getInitData() async {
-  print('Api Call');
   var url = "https://pokeapi.co/api/v2/pokemon";
-  var pokemonList = new List<pokemonBase>();
+  var pokemonList = new List<PokemonBase>();
   //while (url != null) {
-    print('GG');
-    print(url);
-    var response = await http
-        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
-    var data = json.decode(response.body);
-    url = data['next'];
-    var result = data['results'];
-    for (var i = 0; i < result.length; i++)
-    {
-      var temp = result[i];
-      pokemonList.add(new PokemonBase(temp['name'], temp['url']));
-    }
+  var response = await http
+      .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+  var data = json.decode(response.body);
+  url = data['next'];
+  var result = data['results'];
+  for (var i = 0; i < result.length; i++) {
+    var temp = result[i];
+    RegExp regExp = new RegExp(
+      r"\/(\d+)",
+      caseSensitive: false,
+      multiLine: false,
+    );
+    var id = int.parse(regExp.stringMatch(temp['url']).substring(1) );
+    pokemonList.add(new PokemonBase(temp['name'], temp['url'] , id));
+  }
   //}
   return pokemonList;
 }
 
 class PokemonBase {
+  final int id ;
   final String name;
   final String url;
-  PokemonBase(this.name, this.url);
+  PokemonBase(this.name, this.url ,this.id);
 }
 
-class pokemon{
+class pokemon {
   final int id = 25;
   final String name = "pikachu";
-  final int base_experience = 112 ;
+  final int base_experience = 112;
   final int height = 4;
   final bool is_default = true;
-  final int order = 35 ;
-  final int weight = 60 ;
-  final String location_area_encounters = "https://pokeapi.co/api/v2/pokemon/25/encounters" ;
+  final int order = 35;
+  final int weight = 60;
+  final String location_area_encounters =
+      "https://pokeapi.co/api/v2/pokemon/25/encounters";
   /*
 abilities	
 A list of abilities this Pokémon could potentially have.
