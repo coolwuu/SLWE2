@@ -50,7 +50,7 @@ class AfterSplash extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text("Welcome In SplashScreen Package"),
+        title: new Text("Search Pokemon"),
         automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
@@ -185,8 +185,8 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
 
 Future<List<PokemonBase>> getInitData() async {
   print('Api Call');
-  var url = "https://pokeapi.co/api/v2/pokemon-species";
-  var pokemonList = new List<PokemonBase>();
+  var url = "https://pokeapi.co/api/v2/pokemon";
+  var pokemonList = new List<pokemonBase>();
   //while (url != null) {
     print('GG');
     print(url);
@@ -208,4 +208,54 @@ class PokemonBase {
   final String name;
   final String url;
   PokemonBase(this.name, this.url);
+}
+
+class pokemon{
+  final int id = 25;
+  final String name = "pikachu";
+  final int base_experience = 112 ;
+  final int height = 4;
+  final bool is_default = true;
+  final int order = 35 ;
+  final int weight = 60 ;
+  final String location_area_encounters = "https://pokeapi.co/api/v2/pokemon/25/encounters" ;
+  /*
+abilities	
+A list of abilities this Pokémon could potentially have.
+
+list PokemonAbility
+forms	
+A list of forms this Pokémon can take on.
+
+list NamedAPIResource (PokemonForm)
+game_indices	
+A list of game indices relevent to Pokémon item by generation.
+
+list VersionGameIndex
+held_items	
+A list of items this Pokémon may be holding when encountered.
+
+list PokemonHeldItem
+
+moves	
+A list of moves along with learn methods and level details pertaining to specific version groups.
+
+list PokemonMove
+sprites	
+A set of sprites used to depict this Pokémon in the game.
+
+PokemonSprites
+species	
+The species this Pokémon belongs to.
+
+NamedAPIResource (PokemonSpecies)
+stats	
+A list of base stat values for this Pokémon.
+
+list PokemonStat
+types	
+A list of details showing types this Pokémon has.
+
+list PokemonType
+*/
 }
