@@ -4,7 +4,7 @@ import 'package:splashscreen/splashscreen.dart';
 import 'package:http/http.dart' as http;
 
 var responseString = "DONE";
-List<pokemonBase> pokemonBaseList;
+List<PokemonBase> pokemonBaseList;
 void main() {
   runApp(new MaterialApp(
     home: new MyApp(),
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    GetInitData().then((value) {
+    getInitData().then((value) {
       pokemonBaseList = value;
       //print(pokemonBaseList.length);
     });
@@ -183,10 +183,10 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   }
 }
 
-Future<List<pokemonBase>> GetInitData() async {
+Future<List<PokemonBase>> getInitData() async {
   print('Api Call');
   var url = "https://pokeapi.co/api/v2/pokemon-species";
-  var pokemonList = new List<pokemonBase>();
+  var pokemonList = new List<PokemonBase>();
   //while (url != null) {
     print('GG');
     print(url);
@@ -198,14 +198,14 @@ Future<List<pokemonBase>> GetInitData() async {
     for (var i = 0; i < result.length; i++)
     {
       var temp = result[i];
-      pokemonList.add(new pokemonBase(temp['name'], temp['url']));
+      pokemonList.add(new PokemonBase(temp['name'], temp['url']));
     }
   //}
   return pokemonList;
 }
 
-class pokemonBase {
+class PokemonBase {
   final String name;
   final String url;
-  pokemonBase(this.name, this.url);
+  PokemonBase(this.name, this.url);
 }
