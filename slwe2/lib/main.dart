@@ -155,9 +155,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
         ? suggestList
         //: sourceList.where((input) => input.startsWith(query)).toList();
         : pokemonBaseList
-            .where((input) => input.name.startsWith(query))
-            .map((x) => x.name)
-            .toList();
+            .where((input) => input.name.startsWith(query)).toList();
     return ListView.builder(
       itemCount: suggest.length,
       itemBuilder: (BuildContext context, int index) => InkWell(
