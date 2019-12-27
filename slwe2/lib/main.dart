@@ -144,7 +144,10 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
       itemCount: result.length,
       itemBuilder: (BuildContext context, int index) => ListTile(
         title: Text(result[index].name),
-        leading: Image.network("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+ result[index].id.toString() + ".png"),
+        leading: Image.network(
+            "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                result[index].id.toString() +
+                ".png"),
       ),
     );
   }
@@ -155,7 +158,8 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
         ? suggestList
         //: sourceList.where((input) => input.startsWith(query)).toList();
         : pokemonBaseList
-            .where((input) => input.name.startsWith(query)).toList();
+            .where((input) => input.name.startsWith(query))
+            .toList();
     return ListView.builder(
       itemCount: suggest.length,
       itemBuilder: (BuildContext context, int index) => InkWell(
@@ -172,13 +176,30 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
               ],
             ),
           ),
-          leading: Image.network("https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/"+ suggest[index].id.toString() + ".png"),
+          leading: Image.network(
+              "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+                  suggest[index].id.toString() +
+                  ".png"),
         ),
         onTap: () {
           //  query.replaceAll("", suggest[index].toString());
-          searchHint = "";
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => new SplashScreen(
+                  seconds: 1,
+                  navigateAfterSeconds: new PokemonInfoPage(new pokemon(suggest[index].id)),
+                  image: Image(
+                    image: AssetImage('content/image/logo.jpeg'),
+                    height: 168,
+                  ),
+                  backgroundColor: Colors.white,
+                  photoSize: 140.0,
+                ),
+              ));
+          /*searchHint = "";
           query = suggest[index].name.toString();
-          showResults(context);
+          showResults(context);*/
         },
       ),
     );
@@ -201,29 +222,29 @@ Future<List<PokemonBase>> getInitData() async {
       caseSensitive: false,
       multiLine: false,
     );
-    var id = int.parse(regExp.stringMatch(temp['url']).substring(1) );
-    pokemonList.add(new PokemonBase(temp['name'], temp['url'] , id));
+    var id = int.parse(regExp.stringMatch(temp['url']).substring(1));
+    pokemonList.add(new PokemonBase(temp['name'], temp['url'], id));
   }
   //}
   return pokemonList;
 }
 
 class PokemonBase {
-  final int id ;
+  final int id;
   final String name;
   final String url;
-  PokemonBase(this.name, this.url ,this.id);
+  PokemonBase(this.name, this.url, this.id);
 }
 
 class pokemon {
-  final int id = 25;
-  final String name = "pikachu";
-  final int base_experience = 112;
-  final int height = 4;
-  final bool is_default = true;
-  final int order = 35;
-  final int weight = 60;
-  final String location_area_encounters =
+  int id = 25;
+  String name = "pikachu";
+  int base_experience = 112;
+  int height = 4;
+  bool is_default = true;
+  int order = 35;
+  int weight = 60;
+  String location_area_encounters =
       "https://pokeapi.co/api/v2/pokemon/25/encounters";
   /*
 abilities	
@@ -264,4 +285,45 @@ A list of details showing types this Pokémon has.
 
 list PokemonType
 */
+  pokemon(id) {
+    init(id);
+  }
+
+  init(id) async {
+    var url = "https://pokeapi.co/api/v2/pokemon/" + id.toString();
+    print(url);
+    var response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var data = json.decode(response.body);
+    print(data["name"]);
+    id = data["id"];
+    name = data["name"];
+    base_experience = data["experience"];
+    height = data["height"];
+    is_default = data["is_default"];
+    order = data["order"];
+    weight = data["weight"];
+    location_area_encounters = data["location_area_encounters"];
+  }
+}
+
+class PokemonInfoPage extends StatelessWidget {
+  final pokemon data;
+  PokemonInfoPage(this.data);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(data.name),
+      ),
+      body: Center(
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text('Go back!'),
+        ),
+      ),
+    );
+  }
 }
