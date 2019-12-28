@@ -57,7 +57,7 @@ A list of details showing types this Pokémon has.
 
 list PokemonType
 */
-  pokemon(id) {
+  pokemon(this.id) {
     init(id);
   }
 

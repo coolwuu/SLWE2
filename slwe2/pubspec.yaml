@@ -27,6 +27,7 @@ dependencies:
   cloud_firestore: ^0.13.0+1
   http: 0.12.0+2
   sprintf: ^4.0.0
+  intl: ">=0.14.0"
 
 
 
@@ -50,6 +51,7 @@ flutter:
     - content/image/logo.jpeg
     - content/image/answer.jpeg
     - content/image/question.jpeg
+    - content/image/grass.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
