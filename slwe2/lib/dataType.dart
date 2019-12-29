@@ -32,7 +32,7 @@ class Pokemon {
   int weight = 60;
   String location_area_encounters =
       "https://pokeapi.co/api/v2/pokemon/25/encounters";
-  List<PokemonBase> types;
+  List<Type> types;
   /*
 abilities	
 A list of abilities this Pokémon could potentially have.
@@ -91,7 +91,11 @@ list PokemonType
     order = data["order"];
     weight = data["weight"];
     location_area_encounters = data["location_area_encounters"];
-    print(data["types"]);
-    //types = data["types"] ;
+    var types = List<Type>();
+    for( var data in data['types']){
+      types.add(Type(data["slot"], PokemonBase(data['type']['name'],data['type']['url'])));
+    }
+    this.types = types ; 
+    print(this.types);
   }
 }
