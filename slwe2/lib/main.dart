@@ -187,16 +187,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => new SplashScreen(
-                  seconds: 1,
-                  navigateAfterSeconds: new PokemonInfo(suggest[index].id),
-                  image: Image(
-                    image: AssetImage('content/image/logo.jpeg'),
-                    height: 168,
-                  ),
-                  backgroundColor: Colors.white,
-                  photoSize: 140.0,
-                ),
+                builder: (context) => new PokemonInfo(suggest[index].id),
               ));
           /*searchHint = "";
           query = suggest[index].name.toString();
