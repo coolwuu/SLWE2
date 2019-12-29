@@ -189,7 +189,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
               MaterialPageRoute(
                 builder: (context) => new SplashScreen(
                   seconds: 1,
-                  navigateAfterSeconds: new PokemonInfoPage(new Pokemon(suggest[index].id)),
+                  navigateAfterSeconds: new PokemonInfo(suggest[index].id),
                   image: Image(
                     image: AssetImage('content/image/logo.jpeg'),
                     height: 168,

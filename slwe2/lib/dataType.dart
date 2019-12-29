@@ -215,5 +215,6 @@ list PokemonType
           PokemonBase(data['type']['name'], data['type']['url'])));
     }
     this.types = types;
+    return this ;
   }
 }
