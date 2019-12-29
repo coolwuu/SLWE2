@@ -189,7 +189,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
               MaterialPageRoute(
                 builder: (context) => new SplashScreen(
                   seconds: 1,
-                  navigateAfterSeconds: new PokemonInfoPage(new pokemon(suggest[index].id)),
+                  navigateAfterSeconds: new PokemonInfoPage(new Pokemon(suggest[index].id)),
                   image: Image(
                     image: AssetImage('content/image/logo.jpeg'),
                     height: 168,
@@ -216,15 +216,10 @@ Future<List<PokemonBase>> getInitData() async {
   var data = json.decode(response.body);
   url = data['next'];
   var result = data['results'];
+
   for (var i = 0; i < result.length; i++) {
     var temp = result[i];
-    RegExp regExp = new RegExp(
-      r"\/(\d+)",
-      caseSensitive: false,
-      multiLine: false,
-    );
-    var id = int.parse(regExp.stringMatch(temp['url']).substring(1));
-    pokemonList.add(new PokemonBase(temp['name'], temp['url'], id));
+    pokemonList.add(new PokemonBase(temp['name'], temp['url']));
   }
   //}
   return pokemonList;

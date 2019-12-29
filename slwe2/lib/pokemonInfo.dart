@@ -3,7 +3,7 @@ import 'package:slwe2/dataType.dart';
 import 'package:intl/intl.dart';
 
 class PokemonInfoPage extends StatelessWidget {
-  final pokemon data;
+  final Pokemon data;
   final formatter = new NumberFormat("000");
   PokemonInfoPage(this.data);
   @override
@@ -46,7 +46,7 @@ class PokemonInfoPage extends StatelessWidget {
               Container(
                 color: Colors.white,
                 child: Image.network(
-                    "https://media.52poke.com/wiki/2/21/001Bulbasaur.png"),
+                    "https://media.52poke.com/wiki/7/7e/006Charizard.png"),
               )
             ],
           ),

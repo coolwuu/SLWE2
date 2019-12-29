@@ -1,14 +1,28 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+RegExp regExp = new RegExp(
+  r"\/(\d+)",
+  caseSensitive: false,
+  multiLine: false,
+);
+
 class PokemonBase {
-  final int id;
+  int get id {
+    return int.parse(regExp.stringMatch(this.url).substring(1));
+  }
   final String name;
   final String url;
-  PokemonBase(this.name, this.url, this.id);
+  PokemonBase(this.name, this.url);
 }
 
-class pokemon {
+class Type {
+  final int slot;
+  final PokemonBase type;
+  Type(this.slot, this.type);
+}
+
+class Pokemon {
   int id = 25;
   String name = "pikachu";
   int base_experience = 112;
@@ -18,6 +32,7 @@ class pokemon {
   int weight = 60;
   String location_area_encounters =
       "https://pokeapi.co/api/v2/pokemon/25/encounters";
+  List<PokemonBase> types;
   /*
 abilities	
 A list of abilities this Pokémon could potentially have.
@@ -57,7 +72,7 @@ A list of details showing types this Pokémon has.
 
 list PokemonType
 */
-  pokemon(this.id) {
+  Pokemon(this.id) {
     init(id);
   }
 
@@ -76,5 +91,7 @@ list PokemonType
     order = data["order"];
     weight = data["weight"];
     location_area_encounters = data["location_area_encounters"];
+    print(data["types"]);
+    //types = data["types"] ;
   }
 }
