@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:slwe2/dataType.dart';
 import 'package:intl/intl.dart';
@@ -17,7 +19,7 @@ class _PokemonInfoState extends State<PokemonInfo> {
   }
   Pokemon data;
   TypeTheme get theme {
-    return data.types != null
+    return data.types.length > 0 
         ? TypeTheme(data.types.firstWhere((x) => x.slot == 1).type.name)
         : TypeTheme('normal');
   }
@@ -27,6 +29,7 @@ class _PokemonInfoState extends State<PokemonInfo> {
   @override
   void initState() {
     data.init(id).then((val) {
+      data.types.sort((x,y)=>x.slot > y.slot ? 1:0);
       setState(() {});
     });
     super.initState();
@@ -97,8 +100,61 @@ class _PokemonInfoState extends State<PokemonInfo> {
                           Image.asset('content/image/pokemon/${data.id}.png'))
                 ]),
               ),
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(const Radius.circular(30)),
+                      color: theme.subColor),
+                  child: Column(
+                    children: <Widget>[
+                      Text("Types",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
+                      Container(
+                        height: 30,
+                        margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                        decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(const Radius.circular(30)),
+                            color: Colors.white),
+                        child: getTypesWidget(data.types.map((x)=>x.type.name).toList())
+                        
+                      )
+                    ],
+                  ))
             ],
           ),
         ));
   }
 }
+
+class TypeInfo extends StatefulWidget {
+  final String name;
+  TypeTheme get theme {
+    return new TypeTheme(name);
+  }
+
+  TypeInfo(this.name);
+  @override
+  _TypeInfoState createState() => _TypeInfoState();
+}
+
+class _TypeInfoState extends State<TypeInfo> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 20,
+      margin:EdgeInsets.symmetric(horizontal: 5),
+      width: 50,
+        color: widget.theme.color,
+        child: Text(widget.name, style: TextStyle(color: Colors.white),textAlign: TextAlign.center));
+  }
+}
+
+Widget getTypesWidget(List<String> types)
+  {
+    return new Row(mainAxisAlignment: MainAxisAlignment.center,children: types.map((type) => new TypeInfo(type)).toList());
+  }

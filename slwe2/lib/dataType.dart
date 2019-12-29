@@ -170,7 +170,7 @@ class Pokemon {
   int weight = 60;
   String location_area_encounters =
       "https://pokeapi.co/api/v2/pokemon/25/encounters";
-  List<Type> types;
+  List<Type> types = [];
   /*
 abilities	
 A list of abilities this Pokémon could potentially have.
@@ -216,11 +216,9 @@ list PokemonType
 
   init(id) async {
     var url = "https://pokeapi.co/api/v2/pokemon/" + id.toString();
-    print(url);
     var response = await http
         .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
     var data = json.decode(response.body);
-    print(data["name"]);
     id = data["id"];
     name = data["name"];
     base_experience = data["experience"];

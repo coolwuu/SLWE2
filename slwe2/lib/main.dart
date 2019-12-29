@@ -40,7 +40,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     getInitData().then((value) {
       pokemonBaseList = value;
-      //print(pokemonBaseList.length);
     });
     super.initState();
   }
