@@ -50,6 +50,7 @@ flutter:
   assets:
     - content/image/
     - content/image/pokemon/
+    - content/image/type/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

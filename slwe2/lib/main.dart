@@ -84,7 +84,7 @@ class SearchBarViewDelegate extends SearchDelegate<String> {
   ];
   */
 
-  var suggestList = pokemonBaseList.sublist(0, 3);
+  var suggestList = pokemonBaseList;
   /* = [
     "皮卡丘1",
     "皮卡丘2",

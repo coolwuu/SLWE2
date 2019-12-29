@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'dart:convert';
 
 RegExp regExp = new RegExp(
@@ -11,9 +12,126 @@ class PokemonBase {
   int get id {
     return int.parse(regExp.stringMatch(this.url).substring(1));
   }
+
   final String name;
   final String url;
   PokemonBase(this.name, this.url);
+}
+
+class TypeTheme {
+  Color color;
+  String typePic;
+  TypeTheme(String type) {
+    switch (type.toLowerCase()) {
+      case "grass":
+        {
+          typePic = 'content/image/type/grass.png';
+          color = Colors.green;
+        }
+        break;
+      case "fire":
+        {
+          typePic = 'content/image/type/fire.png';
+          color = Colors.red;
+        }
+        break;
+      case "water":
+        {
+          typePic = 'content/image/type/water.png';
+          color = Colors.blue;
+        }
+        break;
+      case "fight":
+        {
+          typePic = 'content/image/type/fight.png';
+          color = Colors.brown;
+        }
+        break;
+      case "dark":
+        {
+          typePic = 'content/image/type/dark.png';
+          color = Colors.grey;
+        }
+        break;
+      case "normal":
+        {
+          typePic = 'content/image/type/normal.png';
+          color = Colors.grey;
+        }
+        break;
+      case "flying":
+        {
+          typePic = 'content/image/type/flying.png';
+          color = Colors.lightBlue;
+        }
+        break;
+      case "fire":
+        {
+          typePic = 'content/image/type/fire.png';
+          color = Colors.pink;
+        }
+        break;
+      case "psychic":
+        {
+          typePic = 'content/image/type/psychic.png';
+          color = Colors.purple;
+        }
+        break;
+      case "ground":
+        {
+          typePic = 'content/image/type/ground.png';
+          color = Colors.brown;
+        }
+        break;
+      case "poison":
+        {
+          typePic = 'content/image/type/poison.png';
+          color = Colors.purple;
+        }
+        break;
+      case "steel":
+        {
+          typePic = 'content/image/type/poison.png';
+          color = Colors.grey;
+        }
+        break;
+      case "rock":
+        {
+          typePic = 'content/image/type/rock.png';
+          color = Colors.grey;
+        }
+        break;
+      case "bug":
+        {
+          typePic = 'content/image/type/bug.png';
+          color = Colors.green;
+        }
+        break;
+      case "dragon":
+        {
+          typePic = 'content/image/type/dragon.png';
+          color = Colors.brown;
+        }
+        break;
+      case "electric":
+        {
+          typePic = 'content/image/type/electric.png';
+          color = Colors.yellow;
+        }
+        break;
+      case "ghost":
+        {
+          typePic = 'content/image/type/ghost.png';
+          color = Colors.purple;
+        }
+        break;
+      default:
+        {
+          color = Colors.grey;
+          typePic = 'content/image/type/normal.png';
+        }
+    }
+  }
 }
 
 class Type {
@@ -92,10 +210,10 @@ list PokemonType
     weight = data["weight"];
     location_area_encounters = data["location_area_encounters"];
     var types = List<Type>();
-    for( var data in data['types']){
-      types.add(Type(data["slot"], PokemonBase(data['type']['name'],data['type']['url'])));
+    for (var data in data['types']) {
+      types.add(Type(data["slot"],
+          PokemonBase(data['type']['name'], data['type']['url'])));
     }
-    this.types = types ; 
-    print(this.types);
+    this.types = types;
   }
 }
