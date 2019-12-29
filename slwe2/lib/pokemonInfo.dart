@@ -45,11 +45,14 @@ class PokemonInfoPage extends StatelessWidget {
               ),
               Container(
                 color: Colors.white,
-                child: Image.network(
-                    "https://media.52poke.com/wiki/7/7e/006Charizard.png"),
+                margin:EdgeInsets.symmetric(vertical: 0, horizontal:10),
+                height: 400,
+                child: Image.asset('content/image/pokemon/${data.id}.png')
               )
             ],
           ),
         ));
   }
 }
+
+
