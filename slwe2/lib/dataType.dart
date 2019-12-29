@@ -20,6 +20,7 @@ class PokemonBase {
 
 class TypeTheme {
   Color color;
+  Color subColor = Colors.grey;
   String typePic;
   TypeTheme(String type) {
     switch (type.toLowerCase()) {
@@ -27,107 +28,126 @@ class TypeTheme {
         {
           typePic = 'content/image/type/grass.png';
           color = Colors.green;
+          subColor = Colors.green[300];
         }
         break;
       case "fire":
         {
           typePic = 'content/image/type/fire.png';
           color = Colors.red;
+          subColor = Colors.red[300];
+          
         }
         break;
       case "water":
         {
           typePic = 'content/image/type/water.png';
           color = Colors.blue;
+          subColor = Colors.blue[300];
         }
         break;
       case "fight":
         {
           typePic = 'content/image/type/fight.png';
           color = Colors.brown;
+          subColor = Colors.brown[300];
         }
         break;
       case "dark":
         {
           typePic = 'content/image/type/dark.png';
           color = Colors.grey;
+          subColor = Colors.grey[300];
         }
         break;
       case "normal":
         {
           typePic = 'content/image/type/normal.png';
           color = Colors.grey;
+          subColor = Colors.grey[300];
         }
         break;
       case "flying":
         {
           typePic = 'content/image/type/flying.png';
           color = Colors.lightBlue;
+          subColor = Colors.lightBlue[300];
         }
         break;
       case "fire":
         {
           typePic = 'content/image/type/fire.png';
           color = Colors.pink;
+          subColor = Colors.pink[300];
         }
         break;
       case "psychic":
         {
           typePic = 'content/image/type/psychic.png';
           color = Colors.purple;
+          subColor = Colors.purple[300];
         }
         break;
       case "ground":
         {
           typePic = 'content/image/type/ground.png';
           color = Colors.brown;
+          subColor = Colors.brown[300];
         }
         break;
       case "poison":
         {
           typePic = 'content/image/type/poison.png';
           color = Colors.purple;
+          subColor = Colors.purple[300];
         }
         break;
       case "steel":
         {
           typePic = 'content/image/type/poison.png';
           color = Colors.grey;
+          subColor = Colors.grey[300];
         }
         break;
       case "rock":
         {
           typePic = 'content/image/type/rock.png';
           color = Colors.grey;
+          subColor = Colors.grey[300];
         }
         break;
       case "bug":
         {
           typePic = 'content/image/type/bug.png';
           color = Colors.green;
+          subColor = Colors.green[300];
         }
         break;
       case "dragon":
         {
           typePic = 'content/image/type/dragon.png';
           color = Colors.brown;
+          subColor = Colors.brown[300];
         }
         break;
       case "electric":
         {
           typePic = 'content/image/type/electric.png';
           color = Colors.yellow;
+          subColor = Colors.yellow[300];
         }
         break;
       case "ghost":
         {
           typePic = 'content/image/type/ghost.png';
           color = Colors.purple;
+          subColor = Colors.purple[300];
         }
         break;
       default:
         {
           color = Colors.grey;
+          subColor = Colors.grey[300];
           typePic = 'content/image/type/normal.png';
         }
     }
