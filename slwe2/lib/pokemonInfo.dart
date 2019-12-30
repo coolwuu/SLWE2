@@ -19,7 +19,7 @@ class _PokemonInfoState extends State<PokemonInfo> {
   }
   Pokemon data;
   TypeTheme get theme {
-    return data.types.length > 0 
+    return data.types.length > 0
         ? TypeTheme(data.types.firstWhere((x) => x.slot == 1).type.name)
         : TypeTheme('normal');
   }
@@ -29,7 +29,7 @@ class _PokemonInfoState extends State<PokemonInfo> {
   @override
   void initState() {
     data.init(id).then((val) {
-      data.types.sort((x,y)=>x.slot > y.slot ? 1:0);
+      data.types.sort((x, y) => x.slot > y.slot ? 1 : 0);
       setState(() {});
     });
     super.initState();
@@ -45,12 +45,9 @@ class _PokemonInfoState extends State<PokemonInfo> {
           color: theme.color,
           child: Column(
             children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(const Radius.circular(30)),
-                    color: theme.subColor),
-                child: Column(children: <Widget>[
+              SubColorContainer(
+                  subColor:theme.subColor,
+                  childWedget: Column(children: <Widget>[
                   Row(
                     children: <Widget>[
                       Container(
@@ -100,29 +97,23 @@ class _PokemonInfoState extends State<PokemonInfo> {
                           Image.asset('content/image/pokemon/${data.id}.png'))
                 ]),
               ),
-              Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  height: 60,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(const Radius.circular(30)),
-                      color: theme.subColor),
-                  child: Column(
+              SubColorContainer(
+                  subColor:theme.subColor,
+                  childWedget : Column(
                     children: <Widget>[
                       Text("Types",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           )),
                       Container(
-                        height: 30,
-                        margin: EdgeInsets.only(top: 10, left: 10, right: 10),
-                        decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.all(const Radius.circular(30)),
-                            color: Colors.white),
-                        child: getTypesWidget(data.types.map((x)=>x.type.name).toList())
-                        
-                      )
+                          height: 30,
+                          margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(const Radius.circular(30)),
+                              color: Colors.white),
+                          child: getTypesWidget(
+                              data.types.map((x) => x.type.name).toList()))
                     ],
                   ))
             ],
@@ -146,15 +137,41 @@ class _TypeInfoState extends State<TypeInfo> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 20,
-      margin:EdgeInsets.symmetric(horizontal: 5),
-      width: 50,
+        height: 20,
+        margin: EdgeInsets.symmetric(horizontal: 5),
+        width: 50,
         color: widget.theme.color,
-        child: Text(widget.name, style: TextStyle(color: Colors.white),textAlign: TextAlign.center));
+        child: Text(widget.name,
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center));
   }
 }
 
-Widget getTypesWidget(List<String> types)
-  {
-    return new Row(mainAxisAlignment: MainAxisAlignment.center,children: types.map((type) => new TypeInfo(type)).toList());
+Widget getTypesWidget(List<String> types) {
+  return new Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: types.map((type) => new TypeInfo(type)).toList());
+}
+
+class SubColorContainer extends StatefulWidget {
+  final Widget childWedget;
+  final Color subColor;
+  SubColorContainer({this.childWedget,this.subColor});
+  @override
+  _SubColorContainerState createState() => _SubColorContainerState();
+}
+
+class _SubColorContainerState extends State<SubColorContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+       margin: EdgeInsets.symmetric(horizontal: 10,vertical:5),
+                  //height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(const Radius.circular(30)),
+                      color: widget.subColor),
+                  child: widget.childWedget
+    );
   }
+}
