@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:slwe2/dataType.dart' ;
 import 'pokemonInfo.dart' ;
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
 
 var responseString = "DONE";
 List<PokemonBase> pokemonBaseList;
@@ -213,4 +216,34 @@ Future<List<PokemonBase>> getInitData() async {
   }
   //}
   return pokemonList;
+}
+
+Future<String> get _localPath async {
+  final directory = await getApplicationDocumentsDirectory();
+
+  return directory.path;
+}
+
+Future<File> get _localFile async {
+  final path = await _localPath;
+  return File('$path/pokemonInitInfo.txt');
+}
+
+Future<File> writePokemonInfo(List<PokemonBase> pokemonInfo) async {
+  final file = await _localFile;
+  // Write the file.
+  //return file.writeAsString('$counter');
+}
+
+Future<List<PokemonBase>> getPokemonInfo() async {
+  try {
+    final file = await _localFile;
+
+    // Read the file.
+    String contents = await file.readAsString();
+    return new List<PokemonBase>();
+  } catch (e) {
+    // If encountering an error, return 0.
+    return new List<PokemonBase>();
+  }
 }
