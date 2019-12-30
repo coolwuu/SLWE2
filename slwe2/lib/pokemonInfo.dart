@@ -45,77 +45,67 @@ class _PokemonInfoState extends State<PokemonInfo> {
           color: theme.color,
           child: Column(
             children: <Widget>[
-              SubColorContainer(
-                  subColor:theme.subColor,
-                  childWedget: Column(children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                          width:
-                              (MediaQuery.of(context).size.width - 50) * 0.75,
-                          height: 50,
-                          padding: EdgeInsets.all(10),
-                          child: Container(
-                            child: Text(
-                              data.name,
-                              textAlign: TextAlign.center,
-                            ),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(const Radius.circular(30)),
-                                color: Colors.white),
-                          )),
-                      Container(
-                        width: 30,
+              SubColorContainer(subColor: theme.subColor, child: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                        width: (MediaQuery.of(context).size.width - 50) * 0.75,
                         height: 50,
-                        child: Image.asset(theme.typePic),
-                      ),
-                      Container(
-                          width:
-                              (MediaQuery.of(context).size.width - 50) * 0.25,
-                          height: 50,
-                          padding: EdgeInsets.all(10),
-                          child: Container(
-                            child: Text("#" + formatter.format(data.id),
-                                textAlign: TextAlign.center),
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(const Radius.circular(30)),
-                                color: Colors.white),
-                          )),
-                    ],
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              BorderRadius.all(const Radius.circular(30)),
-                          color: Colors.white),
-                      margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      child:
-                          Image.asset('content/image/pokemon/${data.id}.png'))
-                ]),
-              ),
-              SubColorContainer(
-                  subColor:theme.subColor,
-                  childWedget : Column(
-                    children: <Widget>[
-                      Text("Types",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          )),
-                      Container(
-                          height: 30,
-                          margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                        padding: EdgeInsets.all(10),
+                        child: Container(
+                          child: Text(
+                            data.name,
+                            textAlign: TextAlign.center,
+                          ),
                           decoration: BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(const Radius.circular(30)),
                               color: Colors.white),
-                          child: getTypesWidget(
-                              data.types.map((x) => x.type.name).toList()))
-                    ],
-                  ))
+                        )),
+                    Container(
+                      width: 30,
+                      height: 50,
+                      child: Image.asset(theme.typePic),
+                    ),
+                    Container(
+                        width: (MediaQuery.of(context).size.width - 50) * 0.25,
+                        height: 50,
+                        padding: EdgeInsets.all(10),
+                        child: Container(
+                          child: Text("#" + formatter.format(data.id),
+                              textAlign: TextAlign.center),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(const Radius.circular(30)),
+                              color: Colors.white),
+                        )),
+                  ],
+                ),
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            BorderRadius.all(const Radius.circular(30)),
+                        color: Colors.white),
+                    margin: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset('content/image/pokemon/${data.id}.png'))
+              ]),
+              SubColorContainer(
+                subColor: theme.subColor,
+                title: "type",
+                child: <Widget>[
+                  Container(
+                      height: 30,
+                      margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              BorderRadius.all(const Radius.circular(30)),
+                          color: Colors.white),
+                      child: getTypesWidget(
+                          data.types.map((x) => x.type.name).toList()))
+                ],
+              ),
             ],
           ),
         ));
@@ -154,9 +144,10 @@ Widget getTypesWidget(List<String> types) {
 }
 
 class SubColorContainer extends StatefulWidget {
-  final Widget childWedget;
+  final List<Widget> child;
   final Color subColor;
-  SubColorContainer({this.childWedget,this.subColor});
+  final String title ;
+  SubColorContainer({@required this.child, @required this.subColor, this.title});
   @override
   _SubColorContainerState createState() => _SubColorContainerState();
 }
@@ -164,14 +155,21 @@ class SubColorContainer extends StatefulWidget {
 class _SubColorContainerState extends State<SubColorContainer> {
   @override
   Widget build(BuildContext context) {
+
+    var widgets = widget.title != null ? <Widget>[
+      Text(widget.title,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          )),
+    ] :  <Widget>[];
+    widgets.addAll(widget.child);
     return Container(
-       margin: EdgeInsets.symmetric(horizontal: 10,vertical:5),
-                  //height: 60,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(const Radius.circular(30)),
-                      color: widget.subColor),
-                  child: widget.childWedget
-    );
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        //height: 60,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(const Radius.circular(30)),
+            color: widget.subColor),
+        child: Column(children: widgets));
   }
 }
