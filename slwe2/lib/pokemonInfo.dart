@@ -126,14 +126,25 @@ class TypeInfo extends StatefulWidget {
 class _TypeInfoState extends State<TypeInfo> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      child: Container(
         height: 20,
         margin: EdgeInsets.symmetric(horizontal: 5),
         width: 50,
         color: widget.theme.color,
         child: Text(widget.name,
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.center));
+            style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
+      ),
+      onTap: () {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                content: Container()
+              );
+            });
+      },
+    );
   }
 }
 
@@ -146,8 +157,9 @@ Widget getTypesWidget(List<String> types) {
 class SubColorContainer extends StatefulWidget {
   final List<Widget> child;
   final Color subColor;
-  final String title ;
-  SubColorContainer({@required this.child, @required this.subColor, this.title});
+  final String title;
+  SubColorContainer(
+      {@required this.child, @required this.subColor, this.title});
   @override
   _SubColorContainerState createState() => _SubColorContainerState();
 }
@@ -155,13 +167,14 @@ class SubColorContainer extends StatefulWidget {
 class _SubColorContainerState extends State<SubColorContainer> {
   @override
   Widget build(BuildContext context) {
-
-    var widgets = widget.title != null ? <Widget>[
-      Text(widget.title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          )),
-    ] :  <Widget>[];
+    var widgets = widget.title != null
+        ? <Widget>[
+            Text(widget.title,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+          ]
+        : <Widget>[];
     widgets.addAll(widget.child);
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

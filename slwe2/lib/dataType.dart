@@ -154,10 +154,10 @@ class TypeTheme {
   }
 }
 
-class Type {
+class PokeProperty {
   final int slot;
   final PokemonBase type;
-  Type(this.slot, this.type);
+  PokeProperty(this.slot, this.type);
 }
 
 class Pokemon {
@@ -170,7 +170,7 @@ class Pokemon {
   int weight = 60;
   String location_area_encounters =
       "https://pokeapi.co/api/v2/pokemon/25/encounters";
-  List<Type> types = [];
+  List<PokeProperty> types = [];
   /*
 abilities	
 A list of abilities this Pokémon could potentially have.
@@ -227,9 +227,9 @@ list PokemonType
     order = data["order"];
     weight = data["weight"];
     location_area_encounters = data["location_area_encounters"];
-    var types = List<Type>();
+    var types = List<PokeProperty>();
     for (var data in data['types']) {
-      types.add(Type(data["slot"],
+      types.add(PokeProperty(data["slot"],
           PokemonBase(data['type']['name'], data['type']['url'])));
     }
     this.types = types;
