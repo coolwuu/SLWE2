@@ -36,7 +36,6 @@ class TypeTheme {
           typePic = 'content/image/type/fire.png';
           color = Colors.red;
           subColor = Colors.red[300];
-          
         }
         break;
       case "water":
@@ -233,6 +232,66 @@ list PokemonType
           PokemonBase(data['type']['name'], data['type']['url'])));
     }
     this.types = types;
+    return this;
+  }
+}
+
+class TypeInfo {
+  final String name;
+  final String baseURL = "https://pokeapi.co/api/v2/type/";
+  List<PokemonBase> double_damage_from = [];
+  List<PokemonBase> double_damage_to = [];
+  List<PokemonBase> half_damage_from = [];
+  List<PokemonBase> half_damage_to = [];
+  List<PokemonBase> no_damage_from = [];
+  List<PokemonBase> no_damage_to = [];
+  TypeInfo(this.name){
+    init();
+  }
+
+  init() async {
+    var url = baseURL + name.toString();
+    print("Call Api $url");
+    var response = await http
+        .get(Uri.encodeFull(url), headers: {"Accept": "application/json"});
+    var data = json.decode(response.body);
+    var damage_relations = data["damage_relations"];
+    var temp = List<PokemonBase>();
+    for (var d in damage_relations["double_damage_from"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    double_damage_from = temp;
+    temp = List<PokemonBase>();
+    for (var d in damage_relations["double_damage_to"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    double_damage_to = temp;
+    temp = List<PokemonBase>();
+    for (var d in damage_relations["half_damage_from"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    half_damage_from = temp;
+    temp = List<PokemonBase>();
+    for (var d in damage_relations["half_damage_to"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    half_damage_to = temp;
+
+    temp = List<PokemonBase>();
+    for (var d in damage_relations["no_damage_from"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    no_damage_from = temp;
+
+    temp = List<PokemonBase>();
+    for (var d in damage_relations["no_damage_to"]) {
+      temp.add(convert2Pokemonbase(d));
+    }
+    no_damage_to = temp;
     return this ;
   }
+}
+
+PokemonBase convert2Pokemonbase(data) {
+  return new PokemonBase(data['name'], data['url']);
 }

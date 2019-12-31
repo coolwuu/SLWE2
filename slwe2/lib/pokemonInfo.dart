@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:slwe2/dataType.dart';
 import 'package:intl/intl.dart';
 
+List<TypeInfo> typeInfos = new List<TypeInfo>();
+
 class PokemonInfo extends StatefulWidget {
   final int id;
   PokemonInfo(this.id);
@@ -102,8 +104,10 @@ class _PokemonInfoState extends State<PokemonInfo> {
                           borderRadius:
                               BorderRadius.all(const Radius.circular(30)),
                           color: Colors.white),
-                      child: getTypesWidget(
-                          data.types.map((x) => x.type.name).toList()))
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: getTypesWidget(
+                              data.types.map((x) => x.type.name).toList())))
                 ],
               ),
             ],
@@ -112,18 +116,27 @@ class _PokemonInfoState extends State<PokemonInfo> {
   }
 }
 
-class TypeInfo extends StatefulWidget {
+class TypeInfoPage extends StatefulWidget {
   final String name;
+  TypeInfo typeInfo;
+
   TypeTheme get theme {
     return new TypeTheme(name);
   }
 
-  TypeInfo(this.name);
+  TypeInfoPage(this.name) {
+    if (typeInfos.where((x) => x.name == this.name).length > 0) {
+      typeInfo = typeInfos.firstWhere((x) => x.name == name);
+    } else {
+      typeInfo = TypeInfo(name);
+      typeInfos.add(typeInfo);
+    }
+  }
   @override
-  _TypeInfoState createState() => _TypeInfoState();
+  _TypeInfoPageState createState() => _TypeInfoPageState();
 }
 
-class _TypeInfoState extends State<TypeInfo> {
+class _TypeInfoPageState extends State<TypeInfoPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -131,7 +144,9 @@ class _TypeInfoState extends State<TypeInfo> {
         height: 20,
         margin: EdgeInsets.symmetric(horizontal: 5),
         width: 50,
-        color: widget.theme.color,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(const Radius.circular(30)),
+            color: widget.theme.color),
         child: Text(widget.name,
             style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
       ),
@@ -140,18 +155,153 @@ class _TypeInfoState extends State<TypeInfo> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                content: Container()
-              );
+                  contentPadding: EdgeInsets.all(5),
+                  contentTextStyle: TextStyle(fontWeight: FontWeight.bold),
+                  content: Container(
+                      color: widget.theme.subColor,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisSize : MainAxisSize.min,
+                        children: <Widget>[
+                          Row(children: <Widget>[
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                    color: Colors.red[400],
+                                    child: Text("Damage From",
+                                        textAlign: TextAlign.center))),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    color: widget.theme.subColor,
+                                    child: TypeInfoPage(widget.name))),
+                            Expanded(
+                                flex: 2,
+                                child: Container(
+                                    color: Colors.green[400],
+                                    child: Text("Damage To",
+                                        textAlign: TextAlign.center))),
+                          ]),
+                          Row(children: <Widget>[
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    color: Colors.red[400],
+                                    child: Text("Power",
+                                        textAlign: TextAlign.center))),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    color: Colors.red[400],
+                                    child: Text("Type",
+                                        textAlign: TextAlign.center))),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                  color: widget.theme.color,
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    color: Colors.green[400],
+                                    child: Text("Power",
+                                        textAlign: TextAlign.center))),
+                            Expanded(
+                                flex: 1,
+                                child: Container(
+                                    color: Colors.green[400],
+                                    child: Text("Type",
+                                        textAlign: TextAlign.center))),
+                          ]),
+                          Table(
+                            children: <TableRow>[
+                              TableRow(
+                                children: <Widget>[
+                                  Container(
+                                    color: Colors.green,
+                                    child:
+                                        Text('2x', textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.double_damage_from
+                                          .map((x) => x.name)
+                                          .toList())),
+                                  Text(''),
+                                  Container(
+                                    color: Colors.red,
+                                    child: Text('0.5 x',
+                                        textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.half_damage_to
+                                          .map((x) => x.name)
+                                          .toList())),
+                                ],
+                              ),
+                              TableRow(
+                                children: <Widget>[
+                                  Container(
+                                    color: Colors.red,
+                                    child: Text('0.5x',
+                                        textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.half_damage_from
+                                          .map((x) => x.name)
+                                          .toList())),
+                                  Text(''),
+                                  Container(
+                                    color: Colors.green,
+                                    child:
+                                        Text('2x', textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.double_damage_to
+                                          .map((x) => x.name)
+                                          .toList())),
+                                ],
+                              ),
+                              TableRow(
+                                children: <Widget>[
+                                  Container(
+                                    color: Colors.black,
+                                    child:
+                                        Text('0x', textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.no_damage_from
+                                          .map((x) => x.name)
+                                          .toList())),
+                                  Text(''),
+                                  Container(
+                                    color: Colors.black,
+                                    child:
+                                        Text('0x', textAlign: TextAlign.center),
+                                  ),
+                                  Column(
+                                      children: getTypesWidget(widget
+                                          .typeInfo.no_damage_to
+                                          .map((x) => x.name)
+                                          .toList())),
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      )));
             });
       },
     );
   }
 }
 
-Widget getTypesWidget(List<String> types) {
-  return new Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: types.map((type) => new TypeInfo(type)).toList());
+List<Widget> getTypesWidget(List<String> types) {
+  return types.map((type) => new TypeInfoPage(type)).toList();
 }
 
 class SubColorContainer extends StatefulWidget {
